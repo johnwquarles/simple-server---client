@@ -1,4 +1,4 @@
-simple-server---client
+simple-server-and-client
 ======================
 
-Simple server &amp; client applications in Ruby.
+Simple server and client applications in Ruby.
