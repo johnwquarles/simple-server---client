@@ -79,7 +79,7 @@ loop {
       else
         client.print "HTTP/1.0 404 Not Found\r\n"
         client.print "\r\n"
-        client.print "404 Error! The POST request is looking for a nonexistant file"
+        client.print "404 Error! The POST request is looking for a nonexistent file"
       end
     end
   
