@@ -24,6 +24,8 @@ def user_get()
 end
 
 def user_post()
+  path = "/thanks.html"
+  
   puts "---------------------", "Let's make a POST request", "---------------------"
   puts "Your name, dear Viking?"
   name = gets.chomp
@@ -32,7 +34,7 @@ def user_post()
   puts "---------------------"
   hash = {:viking => {:name=>name, :email=>email}}
   to_send = hash.to_json
-  "POST /path/script.cgi HTTP/1.0\n" +
+  "POST #{path} HTTP/1.0\n" +
   "From: someuser@tinybrowser.com\n" +
   "User-Agent: TinyBrowser/1.0\n" +
   "Content-Type: text/json\n" +
