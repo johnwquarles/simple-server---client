@@ -2,7 +2,7 @@ require 'socket'
 require 'json'
 
 # I like the hash below for determining file extensions. Thank you https://practicingruby.com/articles/implementing-an-http-file-server
-# via James MacIvor.
+# and James MacIvor.
 
 CONTENT_TYPE_MAPPING = {
   'html' => 'text/html',
