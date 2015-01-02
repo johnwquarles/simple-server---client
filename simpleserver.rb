@@ -47,41 +47,41 @@ loop {
     break if header =~ /\r\n\r\n$/
   end
     
-    header_lines = header.split("\n")
-    verb = header_lines[0].split(" ")[0]
-    path = get_path(header_lines)
-    
-    case verb
-    when "GET"
-      if File.exist?(path)
-        client.print "HTTP/1.0 200 OK\r\n" 
-        client.print "Date: #{Time.now.utc.strftime('%a, %d %b %Y %H:%M:%S')} GMT\r\n"
-        client.print "Content-Type: #{content_type(path)}\r\n"
-        client.print "Content-Length: #{File.size(path)}\r\n"
-        client.print "\r\n"
-        client.print get_html(path)
-      else
-        client.print "HTTP/1.0 404 Not Found\r\n"
-        client.print "\r\n"
-        client.print "404 Error! The requested page cannot be found."
-      end
-    when "POST"
-      if File.exist?(path)
-        # parse out the size, in bytes, of the request body from the header
-        body_size = header_lines[-2].split(" ")[1].to_i
-        # and read exactly that many bytes out of the socket
-        body = client.read(body_size)
-        params = JSON.parse(body)
-        html = substitute_html(params)
-        client.print "HTTP/1.0 200 OK\r\n"
-        client.print "\r\n"
-        client.print html
-      else
-        client.print "HTTP/1.0 404 Not Found\r\n"
-        client.print "\r\n"
-        client.print "404 Error! The POST request is looking for a nonexistent file"
-      end
+  header_lines = header.split("\n")
+  verb = header_lines[0].split(" ")[0]
+  path = get_path(header_lines)
+
+  case verb
+  when "GET"
+    if File.exist?(path)
+      client.print "HTTP/1.0 200 OK\r\n" 
+      client.print "Date: #{Time.now.utc.strftime('%a, %d %b %Y %H:%M:%S')} GMT\r\n"
+      client.print "Content-Type: #{content_type(path)}\r\n"
+      client.print "Content-Length: #{File.size(path)}\r\n"
+      client.print "\r\n"
+      client.print get_html(path)
+    else
+      client.print "HTTP/1.0 404 Not Found\r\n"
+      client.print "\r\n"
+      client.print "404 Error! The requested page cannot be found."
     end
-  
-    client.close
+  when "POST"
+    if File.exist?(path)
+      # parse out the size, in bytes, of the request body from the header
+      body_size = header_lines[-2].split(" ")[1].to_i
+      # and read exactly that many bytes out of the socket
+      body = client.read(body_size)
+      params = JSON.parse(body)
+      html = substitute_html(params)
+      client.print "HTTP/1.0 200 OK\r\n"
+      client.print "\r\n"
+      client.print html
+    else
+      client.print "HTTP/1.0 404 Not Found\r\n"
+      client.print "\r\n"
+      client.print "404 Error! The POST request is looking for a nonexistent file"
+    end
+  end
+
+  client.close
 }
